@@ -162,10 +162,10 @@
     /* ===== Numpad ===== */
     .numpad {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
       padding: 8px 0;
-      max-width: 400px;
+      max-width: 300px;
       margin: 0 auto;
       width: 100%;
     }
@@ -484,7 +484,7 @@
       <div class="instructions">
         <strong>[ Checksum Training ]</strong><br>
         表示された数字の各桁を足し、1桁になるまで繰り返せ。<br>
-        キーボード (0-9) でも入力可能。
+        キーボード (0-8) でも入力可能。
       </div>
       <div class="question-area">
         <div class="question-number" id="training-question">---</div>
@@ -576,13 +576,11 @@
 
     // ===================================================================
     // Mod9 (Digital Root) 計算
-    // 与えられた整数のデジタルルートを返す。
-    // 0 -> 0, それ以外 -> (n - 1) % 9 + 1
+    // 与えられた整数のMod9を返す（0-8の範囲）
     // ===================================================================
     function mod9(n) {
       n = Math.abs(n);
-      if (n === 0) return 0;
-      return ((n - 1) % 9) + 1;
+      return n % 9;
     }
 
     // ===================================================================
@@ -603,12 +601,12 @@
     }
 
     // ===================================================================
-    // テンキー (0-9) を生成してコンテナに挿入する
+    // テンキー (0-8) を生成してコンテナに挿入する
     // ===================================================================
     function createNumpad(container, callback) {
       container.innerHTML = '';
-      // 1-9, then 0 の配置（2行 x 5列）
-      const keys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      // 0-8 の配置（2行 x 5列で9個）
+      const keys = [0, 1, 2, 3, 4, 5, 6, 7, 8];
       keys.forEach(n => {
         const btn = document.createElement('button');
         btn.className = 'num-btn';
@@ -885,8 +883,8 @@
       const key = e.key;
       const activePanel = document.querySelector('.panel.active');
 
-      // 数字キー 0-9
-      if (key >= '0' && key <= '9') {
+      // 数字キー 0-8
+      if (key >= '0' && key <= '8') {
         const num = parseInt(key, 10);
         // 現在アクティブなパネルに応じて処理を分岐
         if (activePanel.id === 'panel-training') {
